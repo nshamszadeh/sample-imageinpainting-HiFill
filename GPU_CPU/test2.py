@@ -123,7 +123,7 @@ def read_imgs_masks(args):
     return paths_img, paths_mask
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--image', default='', type=str,
+parser.add_argument('--video', default='', type=str,
                     help='The filename of image to be completed.')
 parser.add_argument('--mask', default='', type=str,
                     help='The filename of mask, value 255 indicates mask.')
@@ -138,7 +138,7 @@ if not os.path.exists(args.output_dir):
     os.makedirs(args.output_dir)
 """
 
-input_capture = cv2.VideoCapture(args.image)
+input_capture = cv2.VideoCapture(args.video)
 mask_capture = cv2.VideoCapture(args.mask)
 size = (int(input_capture.get(cv2.CAP_PROP_FRAME_WIDTH)),
         int(input_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)))
@@ -183,11 +183,3 @@ with tf.Graph().as_default():
 input_capture.release()
 mask_capture.release()
 out.release()
-"""
-    for path_img, path_mask in zip(paths_img, paths_mask):
-        raw_img = cv2.imread(path_img)
-        raw_mask = cv2.imread(path_mask)
-        inpainted = inpaint(raw_img, raw_mask, sess, inpainted_512_node, attention_node, mask_512_node, image_ph, mask_ph, args.multiple)
-        filename = args.output_dir + '/' + os.path.basename(path_img)
-        cv2.imwrite(filename + '_inpainted.jpg', inpainted)
-"""
